@@ -1,6 +1,15 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import Lib
+import Yesod
+
+import Dispatch ()
+import Foundation
+
+-- Server port
+port :: Int
+port = 44444
 
 main :: IO ()
-main = someFunc
+main = warp port $ ChatServer "Welcome"

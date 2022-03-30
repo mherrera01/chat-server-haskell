@@ -17,6 +17,9 @@ description:         Please see the README on GitHub at <https://github.com/mher
 
 dependencies:
 - base >= 4.7 && < 5
+- yesod
+- text
+- data-default
 
 library:
   source-dirs: src
