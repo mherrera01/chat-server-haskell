@@ -1,0 +1,54 @@
+-- This file has been generated from package.yaml by hpack version 0.15.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           chat-server-haskell
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/mherrera01/chat-server-haskell#readme>
+homepage:       https://github.com/mherrera01/chat-server-haskell#readme
+bug-reports:    https://github.com/mherrera01/chat-server-haskell/issues
+author:         Miguel Herrera
+maintainer:     miguelherrera8600@gmail.com
+copyright:      Copyright (c) 2022 Miguel Herrera
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+cabal-version:  >= 1.10
+
+extra-source-files:
+    ChangeLog.md
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/mherrera01/chat-server-haskell
+
+library
+  hs-source-dirs:
+      src
+  build-depends:
+      base >= 4.7 && < 5
+  exposed-modules:
+      Lib
+  default-language: Haskell2010
+
+executable chat-server-haskell-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >= 4.7 && < 5
+    , chat-server-haskell
+  default-language: Haskell2010
+
+test-suite chat-server-haskell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >= 4.7 && < 5
+    , chat-server-haskell
+  default-language: Haskell2010
