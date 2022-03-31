@@ -21,6 +21,8 @@ dependencies:
 - yesod-static
 - text
 - data-default
+- async
+- directory
 
 library:
   source-dirs: src
