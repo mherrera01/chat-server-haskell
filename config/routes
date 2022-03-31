@@ -1,2 +1,5 @@
+-- Static files
+/static StaticR Static getStatic
+
 -- Chat server routes
 / HomeR GET

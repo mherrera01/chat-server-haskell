@@ -3,6 +3,7 @@
 module Main where
 
 import Yesod
+import Yesod.Static
 
 import Dispatch ()
 import Foundation
@@ -12,4 +13,6 @@ port :: Int
 port = 44444
 
 main :: IO ()
-main = warp port $ ChatServer "Welcome"
+main = do
+    st <- static "static/"
+    warp port $ ChatServer st "Welcome"

@@ -11,6 +11,7 @@ import Foundation
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
-    ChatServer text <- getYesod
+    ChatServer _ text <- getYesod
     setTitle "Free Chat"
+    --addStylesheet $ StaticR css_bootstrap_css -- Check https://bootswatch.com/3/
     $(widgetFileNoReload def "home")
