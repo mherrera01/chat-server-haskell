@@ -8,8 +8,8 @@ advantage of the STM technology for clients concurrency.
 
 ### Environment
 
-This project has been developed under Windows with the following Haskell
-platform, which is available to download [here](https://downloads.haskell.org/~platform/8.0.2/):
+This project is developed on Windows with the following Haskell platform,
+which is available to download [here](https://downloads.haskell.org/~platform/8.0.2/):
 - [GHC](https://www.haskell.org/ghc/) (Glasgow Haskell Compiler) version 8.0.2:
 Support of the [Haskell 2010 language](https://wiki.haskell.org/Language_and_library_specification).
 
@@ -19,11 +19,11 @@ run a Haskell project allowing several commands such as `build`, `run` and `clea
 - [hpack](https://github.com/sol/hpack) version 0.15.0: Build the cabal package
 file from the package.yaml during compilation.
 
-- [Snapshot resolver](https://www.stackage.org) lts-8.18: Specify the GHC version
-to use and the versions of package dependencies. This is configured in the
-stack.yaml file.
+- Snapshot resolver [lts-8.18](https://www.stackage.org/lts-8.18): Specify the
+GHC version to use and the versions of package dependencies. This is configured
+in the stack.yaml file.
 
-For newer versions, the installation setup has changed, whose instructions can
+For newer versions, the installation and setup have changed, whose instructions can
 be found in the official [Haskell site](https://www.haskell.org/downloads/).
 
 ### Production
@@ -39,8 +39,7 @@ the package.yaml file.
 ### Development
 
 For developing the server, the package [yesod-bin](https://hackage.haskell.org/package/yesod-bin)
-is used with the version 1.5.2.3 specified in the snapshot resolver. For its
-installation:
+is used with the version specified in the snapshot resolver. For its installation:
 ```
 $> stack install yesod-bin
 ```
