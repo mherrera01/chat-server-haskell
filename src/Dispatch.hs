@@ -16,7 +16,9 @@ import Yesod
 import Yesod.Static
 
 import Foundation
-import Handler.Home -- Home route handlers
+
+-- Route handlers
+import Handler.Home
 
 -- resourcesChatServer created by mkYesodData in Foundation.hs
 mkYesodDispatch "ChatServer" resourcesChatServer
