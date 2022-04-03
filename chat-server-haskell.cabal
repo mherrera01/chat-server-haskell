@@ -30,13 +30,18 @@ library
       base >= 4.7 && < 5
     , yesod
     , yesod-static
+    , yesod-form
     , text
     , data-default
     , async
     , directory
+    , stm
+    , shakespeare
   exposed-modules:
       Dispatch
       Foundation
+      Handler.Forms
+      Handler.GlobalChat
       Handler.Home
       Settings.StaticFiles
   default-language: Haskell2010
@@ -50,10 +55,13 @@ executable chat-server-haskell-exe
       base >= 4.7 && < 5
     , yesod
     , yesod-static
+    , yesod-form
     , text
     , data-default
     , async
     , directory
+    , stm
+    , shakespeare
     , chat-server-haskell
   default-language: Haskell2010
 
@@ -67,9 +75,12 @@ test-suite chat-server-haskell-test
       base >= 4.7 && < 5
     , yesod
     , yesod-static
+    , yesod-form
     , text
     , data-default
     , async
     , directory
+    , stm
+    , shakespeare
     , chat-server-haskell
   default-language: Haskell2010

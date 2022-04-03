@@ -10,6 +10,7 @@ module Dispatch
 import Control.Monad
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
+import Control.Concurrent.STM
 import System.Directory (doesFileExist)
 import System.Environment
 import Yesod
@@ -19,6 +20,7 @@ import Foundation
 
 -- Route handlers
 import Handler.Home
+import Handler.GlobalChat
 
 -- resourcesChatServer created by mkYesodData in Foundation.hs
 mkYesodDispatch "ChatServer" resourcesChatServer
@@ -27,7 +29,8 @@ mkYesodDispatch "ChatServer" resourcesChatServer
 chatSrv :: IO ChatServer
 chatSrv = do
     st <- static "static/"
-    return $ ChatServer st "Welcome"
+    usr <- atomically $ newTVar []
+    return $ ChatServer st usr
 
 -- Runs the server in a production environment
 productionMain :: IO ()

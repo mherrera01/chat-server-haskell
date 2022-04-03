@@ -1,4 +1,14 @@
 <!-- Chat server main page -->
 
-$doctype 5
-<h2>#{text}
+<div class="jumbotron text-center">
+    <h1>Welcome
+    <p>Chat with people from all the over the world for free
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>About
+            <p>This server is made with Haskell. That means you are functionally chatting!
+        <div class="col-sm-8">
+            <form method=post action=@{GlobalChatR} enctype=#{formEncType} class="form-horizontal">
+                ^{formWidget}

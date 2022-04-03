@@ -1,5 +1,6 @@
 -- Static files
-/static StaticR Static getStatic
+/static StaticR     Static getStatic
 
 -- Chat server routes
-/ HomeR GET
+/       HomeR       GET
+/global GlobalChatR POST

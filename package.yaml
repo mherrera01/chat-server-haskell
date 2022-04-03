@@ -19,10 +19,13 @@ dependencies:
 - base >= 4.7 && < 5
 - yesod
 - yesod-static
+- yesod-form
 - text
 - data-default
 - async
 - directory
+- stm
+- shakespeare
 
 library:
   source-dirs: src

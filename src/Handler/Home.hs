@@ -8,12 +8,12 @@ import Yesod
 import Yesod.Default.Util
 
 import Foundation
-import Settings.StaticFiles
+import Handler.Forms
 
 -- Handler for / HomeR GET
 getHomeR :: Handler Html
-getHomeR = defaultLayout $ do
-    ChatServer _ text <- getYesod
-    setTitle "Free Chat"
-    addStylesheet $ StaticR css_bootstrap_css -- Check https://bootswatch.com/3/
-    $(widgetFileNoReload def "home")
+getHomeR = do
+    (formWidget, formEncType) <- generateFormPost userForm
+    defaultLayout $ do
+        setTitle "Free Chat"
+        $(widgetFileNoReload def "home")
