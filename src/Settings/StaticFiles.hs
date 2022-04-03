@@ -1,5 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+-- This files needs to be recompiled when the static files
+-- are changed or new ones are added. Otherwise, they cannot
+-- be accessed by their references or their contents would
+-- be outdated.
+-- $> stack clean
+-- $> stack build
 module Settings.StaticFiles where
 
 import Yesod.Static (staticFiles)
