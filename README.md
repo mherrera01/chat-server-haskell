@@ -1,10 +1,13 @@
 # chat-server-haskell
 
-A simple chat server made with Haskell using the
+A rest chat server made with Haskell using the
 [Yesod framework](https://www.yesodweb.com/). It is implemented taking
 advantage of the STM technology for clients concurrency.
 
 ## Build
+
+> **_NOTE_**: Building the project could take a while if it is the first time
+installing the package dependencies defined in the package.yaml file.
 
 ### Environment
 
@@ -14,12 +17,12 @@ which is available to download [here](https://downloads.haskell.org/~platform/8.
 Support of the [Haskell 2010 language](https://wiki.haskell.org/Language_and_library_specification).
 
 - [Stack tool](https://docs.haskellstack.org/) version 1.3.2: Compile and
-run a Haskell project allowing several commands such as `build`, `run` and `clean`.
+run a Haskell project allowing several commands such as `build`, `exec` and `clean`.
 
 - [hpack](https://github.com/sol/hpack) version 0.15.0: Build the cabal package
 file from the package.yaml during compilation.
 
-- Snapshot resolver [lts-8.18](https://www.stackage.org/lts-8.18): Specify the
+- Snapshot resolver [lts-8.20](https://www.stackage.org/lts-8.20): Specify the
 GHC version to use and the versions of package dependencies. This is configured
 in the stack.yaml file.
 
@@ -28,13 +31,21 @@ be found in the official [Haskell site](https://www.haskell.org/downloads/).
 
 ### Production
 
-For running the server in production mode, write the following stack command:
+For running the server in production mode, write the following stack commands:
+```
+$> stack build
+$> stack exec chat-server-haskell-exe
+```
+There is also another simplified way:
 ```
 $> stack run
 ```
-It automatically compiles the project in the .stack-work/ folder. It may take
-some time if it is the first time installing the package dependencies defined in
-the package.yaml file.
+It automatically compiles the project in the .stack-work/ folder and executes it.
+This is a shortcut command defined in the package [stack-run](https://hackage.haskell.org/package/stack-run),
+which can be installed as follows:
+```
+$> stack install stack-run
+```
 
 ### Development
 

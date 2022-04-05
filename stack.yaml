@@ -7,17 +7,14 @@
 # Resolver to choose a 'specific' stackage snapshot or a compiler version.
 # A snapshot resolver dictates the compiler version and the set of packages
 # to be used for project dependencies.
-resolver: lts-8.18
+resolver: lts-8.20
 
 # User packages to be built
 packages:
 - '.'
 
 # Dependency packages to be pulled from upstream that are not in the resolver
-extra-deps:
-# Upgrade from foundation-0.0.10 of lts-8.18 to compile yesod-1.4.5
-# Fixed unknown symbol `_clock_gettime` error while compiling
-- foundation-0.0.12
+extra-deps: []
 
 # Override default flag values for local packages and extra-deps
 flags: {}
