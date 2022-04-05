@@ -15,7 +15,9 @@ import System.Directory (doesFileExist)
 import System.Environment
 import Yesod
 import Yesod.Static
+import Yesod.Default.Config2
 
+import Settings.Config
 import Foundation
 
 -- Route handlers
@@ -28,15 +30,19 @@ mkYesodDispatch "ChatServer" resourcesChatServer
 -- Foundation variable
 chatSrv :: IO ChatServer
 chatSrv = do
-    st <- static "static/"
+    -- Loads the default config/settings.yml file using the
+    -- environment variables when possible.
+    settings <- loadYamlSettings [configSettingsYml] [] useEnv
+    st <- static $ appStaticDir settings
     usr <- atomically $ newTVar []
-    return $ ChatServer st usr
+    return $ ChatServer settings st usr
 
 -- Runs the server in a production environment
 productionMain :: IO ()
 productionMain = do
     cs <- chatSrv
-    warp 44444 cs
+    -- Set the port read from the configuration settings
+    warp (appPort $ getConfig cs) cs
 
 -- Runs the server with yesod devel for development purposes.
 -- The code will be recompiled whenever a file is modified and

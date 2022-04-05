@@ -1,5 +1,6 @@
 # Check for more information:
 # https://github.com/yesodweb/yesod/wiki/Configuration
 
-port: "_env:PORT:3000"
-approot: "_env:APPROOT:http://localhost:3000"
+static-dir: "_env:STATIC_DIR:static/"
+port:       "_env:PORT:3000"
+approot:    "_env:APPROOT:http://localhost:3000"

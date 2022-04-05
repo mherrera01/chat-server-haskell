@@ -9,9 +9,11 @@
 module Settings.StaticFiles where
 
 import Yesod.Static (staticFiles)
+import Settings.Config (appStaticDir, compileChatServerConfig)
 
--- Generates routes for all the static files in the static/ folder
+-- Generates routes for all the static files in the folder defined
+-- by the configuration variable static-dir (by default static/).
 -- during compilation. The dots, dashes and slashes are replaced by
 -- underscores, so that the resource is accesed as follows:
 -- css/bootstrap.css -> css_bootstrap_css
-staticFiles "static/"
+staticFiles $ appStaticDir compileChatServerConfig

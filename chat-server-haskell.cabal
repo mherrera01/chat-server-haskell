@@ -37,12 +37,16 @@ library
     , directory
     , stm
     , shakespeare
+    , aeson
+    , yaml
+    , file-embed
   exposed-modules:
       Dispatch
       Foundation
       Handler.Forms
       Handler.GlobalChat
       Handler.Home
+      Settings.Config
       Settings.StaticFiles
   default-language: Haskell2010
 
@@ -62,6 +66,9 @@ executable chat-server-haskell-exe
     , directory
     , stm
     , shakespeare
+    , aeson
+    , yaml
+    , file-embed
     , chat-server-haskell
   default-language: Haskell2010
 
@@ -82,5 +89,8 @@ test-suite chat-server-haskell-test
     , directory
     , stm
     , shakespeare
+    , aeson
+    , yaml
+    , file-embed
     , chat-server-haskell
   default-language: Haskell2010

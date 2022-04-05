@@ -26,6 +26,9 @@ dependencies:
 - directory
 - stm
 - shakespeare
+- aeson
+- yaml
+- file-embed
 
 library:
   source-dirs: src

@@ -13,10 +13,12 @@ import Yesod
 import Yesod.Static
 import Yesod.Default.Util
 
+import Settings.Config
 import Settings.StaticFiles
 
 data ChatServer = ChatServer
-    { getStatic :: Static
+    { getConfig :: ChatServerConfig
+    , getStatic :: Static
     , users :: TVar [Text]
     }
 
@@ -25,6 +27,9 @@ mkYesodData "ChatServer" $(parseRoutesFile "config/routes")
 -- ChatServer is an instance of Yesod, so the data will
 -- be accesed using the getYesod function.
 instance Yesod ChatServer where
+    -- Gets the application root from the configuration settings
+    approot = ApprootMaster $ appRoot . getConfig
+
     -- Stores session data on the client in encrypted cookies
     makeSessionBackend _ = Just <$> defaultClientSessionBackend
         120 -- Timeout in minutes
