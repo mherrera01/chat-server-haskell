@@ -49,6 +49,10 @@ productionMain = do
 -- the server will be relaunched.
 develMain :: IO ()
 develMain = race_ finishDevel $ do
+    -- The port and display port are set from the environment
+    -- variables not the configuration settings. For changing
+    -- them, check the available options of yesod devel.
+    -- $> yesod devel -help
     port <- read <$> getEnv "PORT"
     displayPort <- getEnv "DISPLAY_PORT"
     putStrLn $ "Running in development mode on port " ++ show port

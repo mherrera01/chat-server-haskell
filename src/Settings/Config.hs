@@ -2,6 +2,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE RecordWildCards #-}
 
+-- This file is recompiled when there are changes
+-- in the config/settings.yml file.
 module Settings.Config where
 
 import Data.Aeson
@@ -32,7 +34,8 @@ instance FromJSON ChatServerConfig where
         return ChatServerConfig {..}
 
 -- Decodes the config/settings.yml file in a JSON value for its
--- further conversion.
+-- further conversion. The embedFile function returns the
+-- contents in ByteString.
 configSettingsYmlValue :: Value
 configSettingsYmlValue = either throw id $ decodeEither' $(embedFile configSettingsYml)
 
