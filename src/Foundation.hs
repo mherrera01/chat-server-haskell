@@ -14,7 +14,7 @@ import Yesod.Static
 import Yesod.Default.Util
 
 import Settings.Config
-import Settings.StaticFiles
+import Settings.StaticFiles -- StaicR route references
 
 data ChatServer = ChatServer
     { getConfig :: ChatServerConfig
@@ -22,7 +22,7 @@ data ChatServer = ChatServer
     , users :: TVar [Text]
     }
 
-mkYesodData "ChatServer" $(parseRoutesFile "config/routes")
+mkYesodData "ChatServer" $(parseRoutesFile "config/routes.yesodroutes")
 
 -- ChatServer is an instance of Yesod, so the data will
 -- be accesed using the getYesod function.
@@ -39,16 +39,20 @@ instance Yesod ChatServer where
     -- layout. The contents of the body tag are in default-layout and
     -- the entire page in default-layout-wrapper.
     defaultLayout widget = do
-        -- Gets a message in the user session. For example, after a
-        -- form POST, the user can be redirected to another page along
-        -- with a “Form submission complete” message.
-        mmsg <- getMessage
-
         pc <- widgetToPageContent $ do
             -- The css styling used is the Flatly theme for Bootstrap. It
             -- is applied to all the default layouts.
             -- Check https://bootswatch.com/3/
-            addStylesheet $ StaticR css_bootstrap_css
+            addStylesheet $ StaticR css_bootstrap_min_css
+
+            -- Jquery 3.6.0 needed for the Bootstrap javascript.
+            -- Check https://jquery.com/
+            addScript $ StaticR js_jquery_3_6_0_min_js
+
+            -- Javascript Bootstrap 3.4.1 used.
+            -- Check https://getbootstrap.com/docs/3.4/
+            addScript $ StaticR js_bootstrap_min_js
+
             $(widgetFileNoReload def "default/default-layout") -- Add the widget parameter
         withUrlRenderer $(hamletFile "templates/default/default-layout-wrapper.hamlet")
 
@@ -56,6 +60,7 @@ instance Yesod ChatServer where
 instance RenderMessage ChatServer FormMessage where
     renderMessage _ _ = defaultFormMessage
 
+-- TODO. Check if the user name is already chosen.
 addUser :: ChatServer -> Text -> Handler ()
 addUser cs userName =
     liftIO . atomically $ modifyTVar (users cs) $ \ names -> userName : names

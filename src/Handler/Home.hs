@@ -16,4 +16,9 @@ getHomeR = do
     (formWidget, formEncType) <- generateFormPost userForm
     defaultLayout $ do
         setTitle "Free Chat"
+        
+        -- Gets a message in the user session. After the user form
+        -- POST, the user is redirected back to the home page along
+        -- a message if an error occurs.
+        mmsg <- getMessage
         $(widgetFileNoReload def "home")

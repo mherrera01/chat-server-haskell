@@ -1,6 +1,9 @@
 # Check for more information:
 # https://github.com/yesodweb/yesod/wiki/Configuration
 
+# Route that contains the web server static resources
 static-dir: "_env:STATIC_DIR:static/"
+
+# Server port and IP
 port:       "_env:PORT:3000"
 approot:    "_env:APPROOT:http://localhost:3000"
