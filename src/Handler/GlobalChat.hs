@@ -3,6 +3,7 @@
 
 module Handler.GlobalChat where
 
+import Data.Monoid ((<>))
 import Data.Text (Text)
 import Data.Default
 import Yesod
@@ -20,10 +21,18 @@ postGlobalChatR = do
     case result of
         FormSuccess user -> do
             cs <- getYesod
-            addUser cs $ userName user
-            defaultLayout $ do
-                setTitle "Global Chat"
-                $(widgetFileNoReload def "global-chat")
+            userAdded <- addUser cs $ userNameInput user
+
+            -- Retry user form if the name is already chosen
+            case userAdded of
+                Nothing -> userFormError ("Name " <> userNameInput user
+                                          <> " already in use. Type another one.")
+                Just _ ->
+                    defaultLayout $ do
+                        setTitle "Global Chat"
+                        $(widgetFileNoReload def "global-chat")
+
+        -- Form failure
         _ -> userFormError "Incorrect parameter. Try again."
     where
         -- Sets an error message to the session and redirects

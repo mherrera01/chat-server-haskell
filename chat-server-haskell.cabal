@@ -33,6 +33,7 @@ library
     , yesod-form
     , text
     , data-default
+    , containers
     , async
     , directory
     , stm
@@ -41,6 +42,7 @@ library
     , yaml
     , file-embed
   exposed-modules:
+      Client
       Dispatch
       Foundation
       Handler.Forms
@@ -62,6 +64,7 @@ executable chat-server-haskell-exe
     , yesod-form
     , text
     , data-default
+    , containers
     , async
     , directory
     , stm
@@ -85,6 +88,7 @@ test-suite chat-server-haskell-test
     , yesod-form
     , text
     , data-default
+    , containers
     , async
     , directory
     , stm

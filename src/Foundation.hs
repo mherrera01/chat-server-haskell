@@ -2,12 +2,15 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Foundation where
 
 import Control.Concurrent.STM
+import Data.Monoid ((<>))
 import Data.Default
-import Data.Text (Text)
+import qualified Data.Map as Map
+import Data.Map (Map)
 import Text.Hamlet
 import Yesod
 import Yesod.Static
@@ -15,11 +18,12 @@ import Yesod.Default.Util
 
 import Settings.Config
 import Settings.StaticFiles -- StaicR route references
+import Client
 
 data ChatServer = ChatServer
     { getConfig :: ChatServerConfig
     , getStatic :: Static
-    , users :: TVar [Text]
+    , users :: TVar (Map UserName User) -- Map of name as key and user data
     }
 
 mkYesodData "ChatServer" $(parseRoutesFile "config/routes.yesodroutes")
@@ -60,7 +64,23 @@ instance Yesod ChatServer where
 instance RenderMessage ChatServer FormMessage where
     renderMessage _ _ = defaultFormMessage
 
--- TODO. Check if the user name is already chosen.
-addUser :: ChatServer -> Text -> Handler ()
-addUser cs userName =
-    liftIO . atomically $ modifyTVar (users cs) $ \ names -> userName : names
+-- Server foundation functions
+
+notifyMessage :: ChatServer -> Message -> STM ()
+notifyMessage ChatServer{..} msg = do
+    usersMap <- readTVar users
+    mapM_ (`sendMessage` msg) (Map.elems usersMap)
+
+-- Adds a new user to the global chat given a name not already
+-- in use. The other users are notified by the server.
+addUser :: ChatServer -> UserName -> Handler (Maybe User)
+addUser cs@ChatServer{..} userName = liftIO . atomically $ do
+    usersMap <- readTVar users
+    -- Check if the user name is already chosen
+    if Map.member userName usersMap
+        then return Nothing
+        else do
+            user <- newUser userName -- Create new user
+            writeTVar users $ Map.insert userName user usersMap -- Add user to the server list
+            notifyMessage cs $ ServerMessage (userName <> " has connected")
+            return (Just user)

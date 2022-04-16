@@ -9,6 +9,7 @@ import Yesod.Default.Util
 
 import Foundation
 import Handler.Forms
+import Settings.StaticFiles -- StaicR route references
 
 -- Handler for / HomeR GET
 getHomeR :: Handler Html

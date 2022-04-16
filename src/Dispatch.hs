@@ -11,6 +11,7 @@ import Control.Monad
 import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async (race_)
 import Control.Concurrent.STM
+import qualified Data.Map as Map
 import System.Directory (doesFileExist)
 import System.Environment
 import Yesod
@@ -34,7 +35,7 @@ chatSrv = do
     -- environment variables when possible.
     settings <- loadYamlSettings [configSettingsYml] [] useEnv
     st <- static $ appStaticDir settings
-    usr <- atomically $ newTVar []
+    usr <- atomically $ newTVar Map.empty
     return $ ChatServer settings st usr
 
 -- Runs the server in a production environment

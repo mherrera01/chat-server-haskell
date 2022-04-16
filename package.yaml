@@ -22,6 +22,7 @@ dependencies:
 - yesod-form
 - text
 - data-default
+- containers
 - async
 - directory
 - stm

@@ -1,3 +1,22 @@
 <!-- Global chat page -->
 
-<h2>Global Chat
+<div class="jumbotron text-center">
+    <h1>Welcome
+    <p>Chat with people from all the over the world for free
+
+<!-- Check for icons: https://icons.getbootstrap.com/ -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3>Users
+            <hr>
+            <ul>
+
+        <div class="col-sm-7">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Global Chat
+                <div class="panel-body">
+                    <ul>
+
+        <div class="col-sm-2">
+            <button class="btn btn-default">Logout

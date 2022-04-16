@@ -7,9 +7,10 @@ import Yesod
 import Yesod.Form.Bootstrap3
 
 import Foundation
+import Client
 
 -- User name required
-newtype UserForm = UserForm {userName :: Text}
+newtype UserForm = UserForm {userNameInput :: UserName}
 
 -- Form to access to the global chat.
 -- Using the Bootstrap grid to build the horizontal form:

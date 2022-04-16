@@ -1,19 +1,49 @@
 <!-- Chat server main page -->
 
-<div class="jumbotron text-center">
-    <h1>Welcome
-    <p>Chat with people from all the over the world for free
-
+<!-- Carousel component for server info -->
 <div class="container">
+    <div id="serverInfo" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#serverInfo" data-slide-to="0" class="active">
+            <li data-target="#serverInfo" data-slide-to="1">
+
+        <!-- Server technologies used -->
+        <div class="carousel-inner">
+            <!-- rel="noopener noreferrer" for security purposes -->
+            <div class="item active" style="background-color: #2C3434">
+                <a href="https://www.haskell.org/" target="_blank" rel="noopener noreferrer">
+                    <img src=@{StaticR img_Haskell_logo_png} alt="Haskell" style="margin:auto;">
+                <div class="carousel-caption">
+                    <h3>Haskell
+                    <p>A functional programming language
+
+            <div class="item">
+                <a href="https://www.yesodweb.com/" target="_blank" rel="noopener noreferrer">
+                    <img src=@{StaticR img_Yesod_logo_png} alt="Yesod Web Framework" style="margin:auto;">
+                <div class="carousel-caption">
+                    <h3 style="color: black">Yesod Web Framework
+                    <p style="color: black">Type-safe and RESTful web development
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#serverInfo" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left">
+            <span class="sr-only">Previous
+        <a class="right carousel-control" href="#serverInfo" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right">
+            <span class="sr-only">Next
+
+<div class="container" style="margin-top:30px">
     <div class="row">
         <div class="col-sm-4">
             <h3>About
             <p>This server is made with Haskell. That means you are functionally chatting!
+
         <div class="col-sm-8">
             <!-- Form error message -->
             $maybe msg <- mmsg
                 <div class="alert alert-danger alert-dismissible text-center fade in">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
-                    <strong>#{msg}</strong>
+                    <strong>#{msg}
             <form method=post action=@{GlobalChatR} enctype=#{formEncType} class="form-horizontal">
                 ^{formWidget}
