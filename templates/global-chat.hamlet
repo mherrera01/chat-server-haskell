@@ -16,7 +16,9 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Global Chat
                 <div class="panel-body">
-                    <ul>
+                    <ul id="chat-messages-list">
+            <form id="send-message-form">
+                <input id="message-input">
 
         <div class="col-sm-2">
             <button class="btn btn-default">Logout

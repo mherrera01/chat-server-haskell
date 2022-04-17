@@ -31,9 +31,11 @@ library
     , yesod
     , yesod-static
     , yesod-form
+    , yesod-websockets
     , text
     , data-default
     , containers
+    , conduit-combinators
     , async
     , directory
     , stm
@@ -62,9 +64,11 @@ executable chat-server-haskell-exe
     , yesod
     , yesod-static
     , yesod-form
+    , yesod-websockets
     , text
     , data-default
     , containers
+    , conduit-combinators
     , async
     , directory
     , stm
@@ -86,9 +90,11 @@ test-suite chat-server-haskell-test
     , yesod
     , yesod-static
     , yesod-form
+    , yesod-websockets
     , text
     , data-default
     , containers
+    , conduit-combinators
     , async
     , directory
     , stm

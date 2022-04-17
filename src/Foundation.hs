@@ -7,13 +7,16 @@
 module Foundation where
 
 import Control.Concurrent.STM
+import Control.Monad (forever)
 import Data.Monoid ((<>))
 import Data.Default
 import qualified Data.Map as Map
 import Data.Map (Map)
+import Conduit
 import Text.Hamlet
 import Yesod
 import Yesod.Static
+import Yesod.WebSockets
 import Yesod.Default.Util
 
 import Settings.Config
@@ -23,7 +26,10 @@ import Client
 data ChatServer = ChatServer
     { getConfig :: ChatServerConfig
     , getStatic :: Static
-    , users :: TVar (Map UserName User) -- Map of name as key and user data
+    -- Map of name as key and user data
+    , users :: TVar (Map UserName User)
+    -- A write-only broadcast channel for the global chat messages
+    , globalChatChannel :: TChan Message
     }
 
 mkYesodData "ChatServer" $(parseRoutesFile "config/routes.yesodroutes")
@@ -64,23 +70,40 @@ instance Yesod ChatServer where
 instance RenderMessage ChatServer FormMessage where
     renderMessage _ _ = defaultFormMessage
 
--- Server foundation functions
-
-notifyMessage :: ChatServer -> Message -> STM ()
-notifyMessage ChatServer{..} msg = do
-    usersMap <- readTVar users
-    mapM_ (`sendMessage` msg) (Map.elems usersMap)
-
 -- Adds a new user to the global chat given a name not already
 -- in use. The other users are notified by the server.
 addUser :: ChatServer -> UserName -> Handler (Maybe User)
-addUser cs@ChatServer{..} userName = liftIO . atomically $ do
+addUser ChatServer{..} userName = liftIO . atomically $ do
     usersMap <- readTVar users
-    -- Check if the user name is already chosen
+    -- Checks if the user name is already chosen
     if Map.member userName usersMap
         then return Nothing
         else do
-            user <- newUser userName -- Create new user
+            user <- newUser userName globalChatChannel -- Create new user
             writeTVar users $ Map.insert userName user usersMap -- Add user to the server list
-            notifyMessage cs $ ServerMessage (userName <> " has connected")
+            writeTChan globalChatChannel $ userName <> " has connected"
             return (Just user)
+
+-- Opens a web sockets connection with a user client for
+-- displaying the global chat messages.
+createWSConn :: ChatServer -> User -> Handler ()
+createWSConn cs usr =  webSockets $ globalChatWS cs usr
+
+globalChatWS :: ChatServer -> User -> WebSocketsT Handler ()
+globalChatWS ChatServer{..} User{..} = do
+    -- Runs two actions concurrently and return when one has finished
+    race_
+        -- Waits for reading messages through the channel and sends them
+        -- to the web sockets connection. Therefore, the chat messages will
+        -- be updated for all the clients without refreshing the web page.
+        (forever $ do
+            msg <- liftIO . atomically $ readTChan userChan
+            sendTextData msg)
+
+        -- Writes in the channel the messages received through the web sockets
+        -- connection. They will be seen by all the other clients.
+        (sourceWS $$ mapM_C (\msg ->
+            liftIO . atomically $ writeTChan globalChatChannel $ userName <> ": " <> msg))
+
+    -- Web sockets connection closed
+    liftIO . atomically $ writeTChan globalChatChannel $ userName <> " has left the chat"

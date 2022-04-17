@@ -1,25 +1,23 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Client where 
+module Client where
 
 import Control.Concurrent.STM
 import Data.Text (Text)
 
 type UserName = Text
 
-data Message = ServerMessage Text
-             | UserMessage UserName Text
+type Message = Text
 
 data User = User
     { userName :: UserName
-    , userSendChan :: TChan Message
+    , userChan :: TChan Message
     }
 
-newUser :: UserName -> STM User
-newUser userName = do
-    userSendChan <- newTChan
+newUser :: UserName -> TChan Message -> STM User
+newUser userName channel = do
+    -- Duplicate the broadcast channel, so that the data written
+    -- to either channel will be accessible from both. Each
+    -- user channel has its own read end.
+    userChan <- dupTChan channel
     return User{..}
-
-sendMessage :: User -> Message -> STM ()
--- Point free of the message variable
-sendMessage User{..} = writeTChan userSendChan

@@ -1,0 +1,24 @@
+var url = document.URL,
+    chatMessages = document.getElementById("chat-messages-list"),
+    sendMessage = document.getElementById("send-message-form"),
+    messageInput = document.getElementById("message-input"),
+    conn;
+
+url = url.replace("http:", "ws:").replace("https:", "wss:");
+conn = new WebSocket(url);
+
+conn.onopen = function() {
+    window.alert("[open] Established connection");
+};
+
+conn.onmessage = function(e) {
+    var msg = document.createElement("li");
+    msg.appendChild(document.createTextNode(e.data));
+    chatMessages.appendChild(msg);
+};
+
+sendMessage.addEventListener("submit", function(e) {
+    conn.send(messageInput.value);
+    messageInput.value = "";
+    e.preventDefault();
+});

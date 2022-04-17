@@ -14,6 +14,12 @@ import Handler.Forms
 
 -- TODO. https://www.yesodweb.com/book-1.4/sessions#sessions_ultimate_destination
 
+-- Handler for /global GlobalChatR GET
+getGlobalChatR :: Handler Html
+getGlobalChatR = defaultLayout $ do
+    setTitle "Global Chat"
+    $(widgetFileNoReload def "global-chat")
+
 -- Handler for /global GlobalChatR POST
 postGlobalChatR :: Handler Html
 postGlobalChatR = do
@@ -27,7 +33,9 @@ postGlobalChatR = do
             case userAdded of
                 Nothing -> userFormError ("Name " <> userNameInput user
                                           <> " already in use. Type another one.")
-                Just _ ->
+                Just userAddedOk -> do
+                    -- Creates a web sockets connection for the new user
+                    createWSConn cs userAddedOk
                     defaultLayout $ do
                         setTitle "Global Chat"
                         $(widgetFileNoReload def "global-chat")

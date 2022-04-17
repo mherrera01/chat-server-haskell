@@ -3,4 +3,4 @@
 
 -- Chat server routes
 /       HomeR       GET
-/global GlobalChatR POST
+/global GlobalChatR GET POST

@@ -36,7 +36,12 @@ chatSrv = do
     settings <- loadYamlSettings [configSettingsYml] [] useEnv
     st <- static $ appStaticDir settings
     usr <- atomically $ newTVar Map.empty
-    return $ ChatServer settings st usr
+
+    -- As a broadcast channel is write-only, the garbage collector
+    -- can manage the items inside the channel. This is not possible
+    -- using newTChan, because the items could be read at any time.
+    msgChannel <- atomically newBroadcastTChan
+    return $ ChatServer settings st usr msgChannel
 
 -- Runs the server in a production environment
 productionMain :: IO ()

@@ -20,9 +20,11 @@ dependencies:
 - yesod
 - yesod-static
 - yesod-form
+- yesod-websockets
 - text
 - data-default
 - containers
+- conduit-combinators
 - async
 - directory
 - stm
