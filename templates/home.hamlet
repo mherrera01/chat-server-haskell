@@ -45,5 +45,5 @@
                 <div class="alert alert-danger alert-dismissible text-center fade in">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;
                     <strong>#{msg}
-            <form method=post action=@{GlobalChatR} enctype=#{formEncType} class="form-horizontal">
+            <form method=post action=@{LoginR} enctype=#{formEncType} class="form-horizontal">
                 ^{formWidget}

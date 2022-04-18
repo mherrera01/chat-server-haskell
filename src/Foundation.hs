@@ -70,19 +70,27 @@ instance Yesod ChatServer where
 instance RenderMessage ChatServer FormMessage where
     renderMessage _ _ = defaultFormMessage
 
+-- Gets the user, if possible, given its name
+getUser :: ChatServer -> UserName -> Handler (Maybe User)
+getUser ChatServer{..} userName = liftIO . atomically $ do
+    usersMap <- readTVar users
+    -- Looks up the user name in the server list
+    return $ Map.lookup userName usersMap
+
 -- Adds a new user to the global chat given a name not already
--- in use. The other users are notified by the server.
-addUser :: ChatServer -> UserName -> Handler (Maybe User)
+-- in use. If the user could be added, it returns true and the
+-- other users are notified by the server.
+addUser :: ChatServer -> UserName -> Handler Bool
 addUser ChatServer{..} userName = liftIO . atomically $ do
     usersMap <- readTVar users
     -- Checks if the user name is already chosen
     if Map.member userName usersMap
-        then return Nothing
+        then return False
         else do
             user <- newUser userName globalChatChannel -- Create new user
             writeTVar users $ Map.insert userName user usersMap -- Add user to the server list
             writeTChan globalChatChannel $ userName <> " has connected"
-            return (Just user)
+            return True
 
 -- Opens a web sockets connection with a user client for
 -- displaying the global chat messages.

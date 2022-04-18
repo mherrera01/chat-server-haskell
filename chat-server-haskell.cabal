@@ -50,6 +50,7 @@ library
       Handler.Forms
       Handler.GlobalChat
       Handler.Home
+      Handler.Login
       Settings.Config
       Settings.StaticFiles
   default-language: Haskell2010

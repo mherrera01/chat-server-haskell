@@ -23,6 +23,7 @@ import Foundation
 
 -- Route handlers
 import Handler.Home
+import Handler.Login
 import Handler.GlobalChat
 
 -- resourcesChatServer created by mkYesodData in Foundation.hs
