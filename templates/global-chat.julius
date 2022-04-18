@@ -8,12 +8,15 @@ url = url.replace("http:", "ws:").replace("https:", "wss:");
 conn = new WebSocket(url);
 
 conn.onmessage = function(e) {
-    console.log(e.data)
     var msg = document.createElement("li");
     msg.appendChild(document.createTextNode(e.data));
     chatMessages.appendChild(msg);
 };
 
+/**
+ * The submit event fires when the user clicks the send button
+ * or presses Enter while editing the message input field in the form.
+ */
 sendMessage.addEventListener("submit", function(e) {
     conn.send(messageInput.value);
     messageInput.value = "";
