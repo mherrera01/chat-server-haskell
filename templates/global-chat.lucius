@@ -1,0 +1,13 @@
+.chat-list {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.panel-body {
+    overflow-y: auto;
+    max-height: 250px;
+    /* Keeps the scroll container at the bottom */
+    display: flex;
+    flex-direction: column-reverse;
+}

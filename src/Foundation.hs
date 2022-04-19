@@ -3,11 +3,13 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Foundation where
 
 import Control.Concurrent.STM
 import Control.Monad (forever)
+import Control.Exception.Lifted (try, SomeException)
 import Data.Monoid ((<>))
 import Data.Default
 import qualified Data.Map as Map
@@ -89,7 +91,7 @@ addUser ChatServer{..} userName = liftIO . atomically $ do
         else do
             user <- newUser userName globalChatChannel -- Create new user
             writeTVar users $ Map.insert userName user usersMap -- Add user to the server list
-            writeTChan globalChatChannel $ userName <> " has connected"
+            writeTChan globalChatChannel $ Message "user-status" "" (userName <> " has connected")
             return True
 
 -- Opens a web sockets connection with a user client for
@@ -99,8 +101,8 @@ createWSConn cs usr =  webSockets $ globalChatWS cs usr
 
 globalChatWS :: ChatServer -> User -> WebSocketsT Handler ()
 globalChatWS ChatServer{..} User{..} = do
-    -- Runs two actions concurrently and return when one has finished
-    race_
+    -- Runs two actions concurrently and returns when an exception occurs
+    (e :: Either SomeException ()) <- try $ race_
         -- Waits for reading messages through the channel and sends them
         -- to the web sockets connection. Therefore, the chat messages will
         -- be updated for all the clients without refreshing the web page.
@@ -110,8 +112,9 @@ globalChatWS ChatServer{..} User{..} = do
 
         -- Writes in the channel the messages received through the web sockets
         -- connection. They will be seen by all the other clients.
-        (sourceWS $$ mapM_C (\msg ->
-            liftIO . atomically $ writeTChan globalChatChannel $ userName <> ": " <> msg))
+        (sourceWS $$ mapM_C (liftIO . atomically . writeTChan globalChatChannel . Message "public-msg" userName))
 
     -- Web sockets connection closed
-    liftIO . atomically $ writeTChan globalChatChannel $ userName <> " has left the chat"
+    liftIO . atomically $ case e of
+        Left _ -> writeTChan globalChatChannel $ Message "user-status" "" (userName <> " has left the chat")
+        Right () -> return ()

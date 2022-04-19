@@ -1,16 +1,57 @@
-var url = document.URL,
-    chatMessages = document.getElementById("chat-messages-list"),
-    sendMessage = document.getElementById("send-message-form"),
-    messageInput = document.getElementById("message-input"),
-    conn;
+var url = document.URL;
 
+// HTML elements
+const usersStatus = document.getElementById("users-status-list"),
+      chatMessages = document.getElementById("chat-messages-list"),
+      sendMessage = document.getElementById("send-message-form"),
+      messageInput = document.getElementById("message-input"),
+      logoutButton = document.getElementById("logout-button");
+
+// Maximum number of messages to show in the users status list
+const maxUsersStatus = 8;
+
+// WebSockets connection
 url = url.replace("http:", "ws:").replace("https:", "wss:");
-conn = new WebSocket(url);
+const conn = new WebSocket(url);
 
 conn.onmessage = function(e) {
-    var msg = document.createElement("li");
-    msg.appendChild(document.createTextNode(e.data));
-    chatMessages.appendChild(msg);
+    // Parses the message
+    let msg = JSON.parse(e.data)
+
+    // Updates the client with the given message
+    if (msg.type === "user-status") {
+        updateUsers(msg);
+    } else if (msg.type === "public-msg") {
+        updateChat(msg);
+    }
+};
+
+const updateUsers = function(msg) {
+    let msgHtml = `
+        <li>
+            <p>${msg.content}</p>
+        </li>
+    `;
+
+    // Adds the message <li> element
+    usersStatus.innerHTML += msgHtml;
+
+    // Deletes the first message in the list if the maximum has been reached
+    if (usersStatus.getElementsByTagName("li").length > maxUsersStatus) {
+        usersStatus.removeChild(usersStatus.firstElementChild);
+    }
+};
+
+const updateChat = function(msg) {
+    let msgHtml = `
+        <li class="chat-list">
+            <strong>${msg.fromUser}</strong>
+            <p>${msg.content}</p>
+        </li>
+    `;
+
+    // Adds the message <li> element
+    chatMessages.innerHTML += msgHtml;
 };
 
 /**
@@ -18,7 +59,15 @@ conn.onmessage = function(e) {
  * or presses Enter while editing the message input field in the form.
  */
 sendMessage.addEventListener("submit", function(e) {
+    // Sends the data to the server through the WebSockets connection
     conn.send(messageInput.value);
+
+    // Clears the input
     messageInput.value = "";
     e.preventDefault();
+});
+
+logoutButton.addEventListener("click", function() {
+    // Closes the WebSockets connection
+    conn.close();
 });

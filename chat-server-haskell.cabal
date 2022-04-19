@@ -36,6 +36,8 @@ library
     , data-default
     , containers
     , conduit-combinators
+    , lifted-base
+    , websockets
     , async
     , directory
     , stm
@@ -70,6 +72,8 @@ executable chat-server-haskell-exe
     , data-default
     , containers
     , conduit-combinators
+    , lifted-base
+    , websockets
     , async
     , directory
     , stm
@@ -96,6 +100,8 @@ test-suite chat-server-haskell-test
     , data-default
     , containers
     , conduit-combinators
+    , lifted-base
+    , websockets
     , async
     , directory
     , stm
