@@ -43,7 +43,7 @@ instance Yesod ChatServer where
     approot = ApprootMaster $ appRoot . getConfig
 
     -- Stores session data on the client in encrypted cookies
-    makeSessionBackend _ = Just <$> defaultClientSessionBackend
+    makeSessionBackend _ = Just <$> defaultClientSessionBackend -- TODO. Delete user when session expires
         120 -- Timeout in minutes
         "config/client_session_key.aes"
 
@@ -79,6 +79,13 @@ getUser ChatServer{..} userName = liftIO . atomically $ do
     -- Looks up the user name in the server list
     return $ Map.lookup userName usersMap
 
+-- Removes a user from the server list given the name. The
+-- other users are notified by the server.
+removeUser :: ChatServer -> UserName -> Handler ()
+removeUser ChatServer{..} userName = liftIO . atomically $ do
+    modifyTVar' users $ Map.delete userName
+    writeTChan globalChatChannel $ Message "user-status" "" (userName <> " has left the chat")
+
 -- Adds a new user to the global chat given a name not already
 -- in use. If the user could be added, it returns true and the
 -- other users are notified by the server.
@@ -102,7 +109,7 @@ createWSConn cs usr =  webSockets $ globalChatWS cs usr
 globalChatWS :: ChatServer -> User -> WebSocketsT Handler ()
 globalChatWS ChatServer{..} User{..} = do
     -- Runs two actions concurrently and returns when an exception occurs
-    (e :: Either SomeException ()) <- try $ race_
+    (_ :: Either SomeException ()) <- try $ race_
         -- Waits for reading messages through the channel and sends them
         -- to the web sockets connection. Therefore, the chat messages will
         -- be updated for all the clients without refreshing the web page.
@@ -115,6 +122,4 @@ globalChatWS ChatServer{..} User{..} = do
         (sourceWS $$ mapM_C (liftIO . atomically . writeTChan globalChatChannel . Message "public-msg" userName))
 
     -- Web sockets connection closed
-    liftIO . atomically $ case e of
-        Left _ -> writeTChan globalChatChannel $ Message "user-status" "" (userName <> " has left the chat")
-        Right () -> return ()
+    return ()

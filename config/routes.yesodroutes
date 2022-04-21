@@ -5,3 +5,4 @@
 /       HomeR       GET
 /login  LoginR      GET POST
 /global GlobalChatR GET
+/logout LogoutR     GET POST

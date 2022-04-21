@@ -32,6 +32,7 @@
                                 <span class="glyphicon glyphicon-send">
 
         <div class="col-sm-2">
-            <button id="logout-button" class="btn btn-default">
-                Logout&nbsp;
-                <span class="glyphicon glyphicon-log-out">
+            <form method=post action=@{LogoutR}>
+                <button class="btn btn-default">
+                    Logout&nbsp;
+                    <span class="glyphicon glyphicon-log-out">

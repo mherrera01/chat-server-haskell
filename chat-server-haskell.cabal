@@ -53,6 +53,7 @@ library
       Handler.GlobalChat
       Handler.Home
       Handler.Login
+      Handler.Logout
       Settings.Config
       Settings.StaticFiles
   default-language: Haskell2010

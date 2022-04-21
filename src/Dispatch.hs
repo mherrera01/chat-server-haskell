@@ -25,6 +25,7 @@ import Foundation
 import Handler.Home
 import Handler.Login
 import Handler.GlobalChat
+import Handler.Logout
 
 -- resourcesChatServer created by mkYesodData in Foundation.hs
 mkYesodDispatch "ChatServer" resourcesChatServer

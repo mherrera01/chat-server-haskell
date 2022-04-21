@@ -4,8 +4,7 @@ var url = document.URL;
 const usersStatus = document.getElementById("users-status-list"),
       chatMessages = document.getElementById("chat-messages-list"),
       sendMessage = document.getElementById("send-message-form"),
-      messageInput = document.getElementById("message-input"),
-      logoutButton = document.getElementById("logout-button");
+      messageInput = document.getElementById("message-input");
 
 // Maximum number of messages to show in the users status list
 const maxUsersStatus = 8;
@@ -65,9 +64,4 @@ sendMessage.addEventListener("submit", function(e) {
     // Clears the input
     messageInput.value = "";
     e.preventDefault();
-});
-
-logoutButton.addEventListener("click", function() {
-    // Closes the WebSockets connection
-    conn.close();
 });
