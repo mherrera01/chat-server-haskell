@@ -43,7 +43,7 @@ instance Yesod ChatServer where
     approot = ApprootMaster $ appRoot . getConfig
 
     -- Stores session data on the client in encrypted cookies
-    makeSessionBackend _ = Just <$> defaultClientSessionBackend -- TODO. Delete user when session expires
+    makeSessionBackend _ = Just <$> defaultClientSessionBackend
         120 -- Timeout in minutes
         "config/client_session_key.aes"
 
