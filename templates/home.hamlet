@@ -18,12 +18,11 @@
                     <h3>Haskell
                     <p>A functional programming language
 
-            <div class="item">
+            <div class="item" style="background-color: #CCCCCC">
                 <a href="https://www.yesodweb.com/" target="_blank" rel="noopener noreferrer">
-                    <img src=@{StaticR img_Yesod_logo_png} alt="Yesod Web Framework" style="margin:auto;">
-                <div class="carousel-caption">
-                    <h3 style="color: black">Yesod Web Framework
-                    <p style="color: black">Type-safe and RESTful web development
+                    <img src=@{StaticR img_Yesod_fractal_png} alt="Yesod Web Framework" style="margin:auto;">
+                <div class="carousel-caption" style="top:0; bottom: auto;">
+                    <h4>Type-safe and RESTful web development
 
         <!-- Left and right controls -->
         <a class="left carousel-control" href="#serverInfo" data-slide="prev">
