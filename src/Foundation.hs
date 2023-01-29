@@ -104,7 +104,7 @@ addUser ChatServer{..} userName = liftIO . atomically $ do
 -- Opens a web sockets connection with a user client for
 -- displaying the global chat messages.
 createWSConn :: ChatServer -> User -> Handler ()
-createWSConn cs usr =  webSockets $ globalChatWS cs usr
+createWSConn cs usr = webSockets $ globalChatWS cs usr
 
 globalChatWS :: ChatServer -> User -> WebSocketsT Handler ()
 globalChatWS ChatServer{..} User{..} = do
